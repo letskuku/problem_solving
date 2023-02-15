@@ -7,7 +7,7 @@ int main() {
     cin.tie(0);
 
     int m; //수행해야 하는 연산의 수
-    int s[21] = { 0 }; //공집합 S
+    int s = 0; //공집합 S
     int x;
 
     string command;
@@ -19,29 +19,30 @@ int main() {
 
         if (command == "add") {
             cin >> x;
-            s[x] = 1;
+            s |= (1 << x);
         }
         else if (command == "remove") {
             cin >> x;
-            s[x] = 0;
+            s &= ~(1 << x);
         }
         else if (command == "check") {
             cin >> x;
-            cout << s[x] << "\n";
+            if (s & (1 << x)) {
+                cout << "1 \n";
+            }
+            else {
+                cout << "0 \n";
+            }
         }
         else if (command == "toggle") {
             cin >> x;
-            s[x] ^= 1;
+            s ^= (1 << x);
         }
         else if (command == "all") {
-            for (int j = 1; j < 21; j++) {
-                s[j] = 1;
-            }
+            s = 0b111111111111111111111;
         }
         else if (command == "empty") {
-            for (int j = 1; j < 21; j++) {
-                s[j] = 0;
-            }
+            s = 0;
         }
     }
 
