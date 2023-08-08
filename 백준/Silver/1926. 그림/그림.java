@@ -4,10 +4,11 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
         int[][] board = new int[m][n];
         boolean[][] visit = new boolean[m][n];
@@ -15,8 +16,9 @@ public class Main {
         int[] dy = {-1, 1, 0, 0};
 
         for (int i = 0; i < n; i++) {
+            StringTokenizer tmp = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                board[j][i] = sc.nextInt();
+                board[j][i] = Integer.parseInt(tmp.nextToken());
             }
         }
 
