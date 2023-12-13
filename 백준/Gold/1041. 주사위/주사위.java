@@ -1,43 +1,43 @@
 import java.io.*;
 import java.util.*;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         Long n = Long.parseLong(br.readLine());
-        long one, two, three;
+        long one = 51;
+        long two = 101;
+        long three = 151;
+        long max = 0;
 
         st = new StringTokenizer(br.readLine());
-        List<Long> dice = new ArrayList<>();
+        long[] dice = new long[6];
         for (int i = 0; i < 6; i++) {
-            dice.add(Long.parseLong(st.nextToken()));
+            dice[i] = Long.parseLong(st.nextToken());
         }
 
-        List<Long> diceSumForTwo = new ArrayList<>();
-        diceSumForTwo.add(dice.get(0) + dice.get(5));
-        diceSumForTwo.add(dice.get(1) + dice.get(4));
-        diceSumForTwo.add(dice.get(2) + dice.get(3));
+        for (int i = 0; i < 6; i++) {
+            one = min(one, dice[i]);
+            max = max(max, dice[i]);
 
-        List<Long> diceSumForThree = new ArrayList<>();
-        for (int i = 2; i < 4; i++) {
-            diceSumForThree.add(dice.get(i) + dice.get(0) + dice.get(1));
-            diceSumForThree.add(dice.get(i) + dice.get(0) + dice.get(4));
-            diceSumForThree.add(dice.get(i) + dice.get(1) + dice.get(5));
-            diceSumForThree.add(dice.get(i) + dice.get(4) + dice.get(5));
-        }
+            for (int j = i + 1; j < 6; j++) {
+                if (i + j == 5) {
+                    continue; // 마주보는 경우 제외
+                }
+                two = min(two, dice[i] + dice[j]);
 
-        Collections.sort(dice);
-        Collections.sort(diceSumForThree);
-        one = dice.get(0);
-        three = diceSumForThree.get(0);
-
-        two = dice.get(0) + dice.get(1);
-        long firThird = dice.get(0) + dice.get(2);
-        long secThird = dice.get(1) + dice.get(2);
-        if (diceSumForTwo.contains(two)) {
-            two = Math.min(firThird, secThird);
+                for (int k = j + 1; k < 6; k++) {
+                    if (j + k == 5 || k + i == 5) {
+                        continue; // 마주보는 경우 제외
+                    }
+                    three = min(three, dice[i] + dice[j] + dice[k]);
+                }
+            }
         }
 
         Long ans = 0L;
@@ -56,9 +56,10 @@ public class Main {
 
         if (n == 1L) {
             ans = 0L;
-            for (int i = 0; i < 5; i++) {
-                ans += dice.get(i);
+            for (int i = 0; i < 6; i++) {
+                ans += dice[i];
             }
+            ans -= max;
         }
 
         System.out.println(ans);
