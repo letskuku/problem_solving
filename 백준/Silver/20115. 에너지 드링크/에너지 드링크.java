@@ -9,11 +9,11 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
         double ans = 0;
-        List<Long> drinks = new ArrayList<>();
+        List<Integer> drinks = new ArrayList<>();
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            drinks.add(Long.parseLong(st.nextToken()));
+            drinks.add(Integer.parseInt(st.nextToken()));
         }
         Collections.sort(drinks);
 
