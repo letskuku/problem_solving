@@ -2,14 +2,17 @@ import java.io.*;
 
 public class Main {
 
+    static StringBuilder sb;
+
+    static int prevCol = -1; // 직전 콜론 위치
+    static int doubleCol = -1; // 연속된 콜론 있는 경우 첫번재 콜론 위치
+    static int group = 0; // 연속된 콜론에 들어갈 그룹을 제외한 그룹 수
+    static int index = 0; // 현재 탐색 위치
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder(br.readLine());
-
-        int prevCol = -1;
-        int doubleCol = -1;
-        int group = 0;
-        int index = 0;
+        sb = new StringBuilder(br.readLine());
+        
         if ((sb.charAt(0) == ':') && (sb.charAt(1) == ':')) {
             doubleCol = 0;
             prevCol = 1;
@@ -18,17 +21,13 @@ public class Main {
 
         while (index < sb.length()) {
             if (sb.charAt(index) == ':') {
-                int zeroNum = 4 - (index - prevCol -1);
-                StringBuilder zeros = new StringBuilder();
-                for (int i = 0 ; i < zeroNum; i++) {
-                    zeros.append(0);
-                }
-                sb.insert(prevCol + 1, zeros);
-                group++;
+                int zeroNum = addZero();
                 index += zeroNum;
 
                 prevCol = index;
                 index++;
+                
+                // 다음 문자도 콜론인지 검사
                 if ((index < sb.length()) && (sb.charAt(index) == ':')) {
                     doubleCol = prevCol;
                     prevCol = index;
@@ -39,30 +38,37 @@ public class Main {
             }
         }
 
-        int lastZeroNum = 4 - (sb.length() - prevCol - 1);
-        if (lastZeroNum > 0) {
-            StringBuilder zeros = new StringBuilder();
-            for (int i = 0 ; i < lastZeroNum; i++) {
-                zeros.append(0);
-            }
-            sb.insert(prevCol + 1, zeros);
-            group++;
-        } else if (doubleCol != sb.length() - 2) {
-            group++;
+        // 마지막 그룹에 대한 생략된 0 복원
+        if (index == sb.length()) {
+            addZero();
         }
 
+        // 연속된 콜론 2개에 대한 복원
         if (doubleCol != -1) {
             StringBuilder zeros = new StringBuilder();
             for (int i = 0; i < 8 - group; i++) {
                 zeros.append("0000:");
             }
             sb.replace(doubleCol + 1, doubleCol + 2, zeros.toString());
-
+            
+            // ::~의 구성일 경우 앞 콜론 삭제
             if (doubleCol == 0) {
                 sb = new StringBuilder(sb.substring(1));
             }
         }
 
         System.out.println(sb);
+    }
+    
+    static int addZero() {
+        int zeroNum = 4 - (index - prevCol -1); // 생략된 0 개수 계산
+        StringBuilder zeros = new StringBuilder();
+        for (int i = 0 ; i < zeroNum; i++) {
+            zeros.append(0);
+        }
+        sb.insert(prevCol + 1, zeros);
+        group++;
+        
+        return zeroNum;
     }
 }
