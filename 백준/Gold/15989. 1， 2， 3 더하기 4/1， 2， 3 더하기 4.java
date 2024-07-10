@@ -8,33 +8,22 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int t = Integer.parseInt(br.readLine());
-        int[] d = new int[10001];
-        d[1] = 1;
-        d[2] = 2;
-        d[3] = 3;
+        int[][] d = new int[10001][4];
+        d[1][1] = 1;
+        d[2][1] = 1;
+        d[2][2] = 1;
+        d[3][1] = 1;
+        d[3][2] = 1;
+        d[3][3] = 1;
         for (int i = 4; i <= 10000; i++) {
-            d[i] = d[i - 1];
-
-            if (i % 2 == 0) {
-                d[i]++;
-            }
-
-            if (i % 3 == 0) {
-                d[i]++;
-            }
-
-            for (int j = i - 3; j >= 2; j -= 3) {
-                if (j % 2 == 0) {
-                    d[i]++;
-                }
-            }
+            d[i][1] = d[i - 1][1];
+            d[i][2] = d[i - 2][1] + d[i - 2][2];
+            d[i][3] = d[i - 3][1] + d[i - 3][2] + d[i - 3][3];
         }
-
-        StringBuilder sb = new StringBuilder();
+        
         while (t-- > 0) {
-            sb.append(d[Integer.parseInt(br.readLine())] + "\n");
+            int tmp = Integer.parseInt(br.readLine());
+            System.out.println(d[tmp][1] + d[tmp][2] + d[tmp][3]);
         }
-
-        System.out.println(sb);
     }
 }
