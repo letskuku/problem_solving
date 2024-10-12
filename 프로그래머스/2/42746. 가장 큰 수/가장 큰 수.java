@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public String solution(int[] numbers) {
-        String answer;
+        String answer = "";
         
         List<String> list = new ArrayList<>();
         for (int i = 0; i < numbers.length; i++) {
@@ -15,11 +15,9 @@ class Solution {
             return tmp2 - tmp1;
         });
             
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i));
+            answer = answer.concat(list.get(i));
         }
-        answer = sb.toString();
         
         if (list.get(0).equals("0")) {
             answer = "0";
